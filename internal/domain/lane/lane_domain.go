@@ -29,7 +29,7 @@ func (l *laneDomainImpl) Update(request *admin.UpdateLaneRequest) (uint64, error
 	lp := &lane_repo.LaneResourceTab{LaneId: request.LaneId, LaneName: request.LaneName, LaneType: request.LaneType,
 		LaneComposition: request.LaneComposeSl, Operator: request.Operator, IsOk: sql.NullInt32{Int32: request.IsOk, Valid: true}}
 	if lp.LaneId == 0 {
-		return 0, errors.New("更新时laneid不能为0")
+		return 0, errors.New("更新时laneid不能为0,嘻嘻")
 	}
 	lptab, err := lane_repo.NewLaneRepo().SelectById(lp.LaneId)
 	if err != nil {
