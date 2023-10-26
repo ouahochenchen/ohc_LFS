@@ -61,13 +61,14 @@ func (l *laneDomainImpl) Update(request *admin.UpdateLaneRequest) (uint64, error
 	return lptab.LaneId, err1
 }
 func (l *laneDomainImpl) PageSelect(request *admin.PageSelectLaneRequest) (*admin.PageSelectLaneResponse, error) {
-	record, err := lane_repo.NewLaneRepo().SelectWithPage(request.Page, request.PageSize)
+	record, total, err := lane_repo.NewLaneRepo().SelectWithPage(request.Page, request.PageSize)
+
 	if err != nil {
 		return nil, err
 	}
 	var recordResponse = new(admin.PageSelectLaneResponse)
 	//tabs := make([]*lane_repo.LaneResourceTab, 0)
 	//tabs = append(tabs, record)
-	recordResponse = &admin.PageSelectLaneResponse{ResponseTab: record}
+	recordResponse = &admin.PageSelectLaneResponse{ResponseTab: record, Page: request.Page, PageSize: request.PageSize, Total: total}
 	return recordResponse, err
 }

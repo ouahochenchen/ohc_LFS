@@ -13,7 +13,7 @@ type LaneRepo interface {
 	CreateBatch(laneResources []*LaneResourceTab) error
 	Update(laneResource *LaneResourceTab) error
 	SelectById(i uint64) (*LaneResourceTab, error)
-	SelectWithPage(page uint64, pageSize uint64) ([]*LaneResourceTab, error)
+	SelectWithPage(page uint64, pageSize uint64) ([]*LaneResourceTab, uint64, error)
 }
 
 type laneRepoImpl struct {
@@ -46,10 +46,12 @@ func (l *laneRepoImpl) SelectById(i uint64) (*LaneResourceTab, error) {
 	err := dbLane.Where("lane_id=?", i).Find(&lane).Error
 	return &lane, err
 }
-func (l *laneRepoImpl) SelectWithPage(page uint64, pageSize uint64) ([]*LaneResourceTab, error) {
+func (l *laneRepoImpl) SelectWithPage(page uint64, pageSize uint64) ([]*LaneResourceTab, uint64, error) {
 	var laneRecord = make([]*LaneResourceTab, 0)
 	//var tabs *LaneResourceTab
-	//var totalRecords int64
+	var totalRecords uint64
+	i := int64(totalRecords)
 	err2 := dbLane.Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
-	return laneRecord, err2
+	dbLane.Model(&LaneResourceTab{}).Count(&i)
+	return laneRecord, uint64(i), err2
 }
