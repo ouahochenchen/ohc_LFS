@@ -42,7 +42,7 @@ func (l *orderRepoImpl) SelectWithPage(page uint64, pageSize uint64, laneId *uin
 	i := int64(totalRecords)
 	var err2 error
 	if laneId != nil && laneName != nil {
-		err2 = dbLane.Where("order_id=?", *laneId).Where("order_id=?", *laneName).Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
+		err2 = dbLane.Where("order_id=?", *laneId).Where("order_id=?", *laneName).Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&orderRecord).Error
 	} else if laneId != nil {
 		err2 = dbLane.Where("order_id=?", *laneId).Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&orderRecord).Error
 	} else if laneName != nil {
