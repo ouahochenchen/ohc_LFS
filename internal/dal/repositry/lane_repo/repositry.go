@@ -30,7 +30,7 @@ func (l *laneRepoImpl) CreateBatch(laneResources []*LaneResourceTab) error {
 func (l *laneRepoImpl) Create(laneResource *LaneResourceTab) (uint64, error) {
 	re := dbLane.Create(laneResource)
 	if re.Error != nil {
-		return 0, re.Error
+		return -1, re.Error
 	}
 	return laneResource.LaneId, nil
 }
@@ -61,7 +61,6 @@ func (l *laneRepoImpl) SelectWithPage(page uint64, pageSize uint64, laneId *uint
 	} else {
 		err2 = dbLane.Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
 	}
-
 	dbLane.Model(&LaneResourceTab{}).Count(&i)
 	return laneRecord, uint64(i), err2
 }
