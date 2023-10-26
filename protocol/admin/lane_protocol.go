@@ -36,8 +36,10 @@ type UpdateLaneResponse struct {
 
 // PageSelectLaneRequest /*
 type PageSelectLaneRequest struct {
-	Page     uint64 `json:"page"`
-	PageSize uint64 `json:"pageSize"`
+	Page     uint64  `json:"page"`
+	PageSize uint64  `json:"pageSize"`
+	LaneId   *uint64 `json:"laneId"`
+	LaneName *string `json:"laneName"`
 }
 type PageSelectLaneResponse struct {
 	ResponseTab []*lane_repo.LaneResourceTab

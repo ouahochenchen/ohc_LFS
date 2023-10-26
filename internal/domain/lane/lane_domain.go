@@ -61,7 +61,7 @@ func (l *laneDomainImpl) Update(request *admin.UpdateLaneRequest) (uint64, error
 	return lptab.LaneId, err1
 }
 func (l *laneDomainImpl) PageSelect(request *admin.PageSelectLaneRequest) (*admin.PageSelectLaneResponse, error) {
-	record, total, err := lane_repo.NewLaneRepo().SelectWithPage(request.Page, request.PageSize)
+	record, total, err := lane_repo.NewLaneRepo().SelectWithPage(request.Page, request.PageSize, request.LaneId, request.LaneName)
 
 	if err != nil {
 		return nil, err

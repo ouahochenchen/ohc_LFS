@@ -13,7 +13,7 @@ type LaneRepo interface {
 	CreateBatch(laneResources []*LaneResourceTab) error
 	Update(laneResource *LaneResourceTab) error
 	SelectById(i uint64) (*LaneResourceTab, error)
-	SelectWithPage(page uint64, pageSize uint64) ([]*LaneResourceTab, uint64, error)
+	SelectWithPage(page uint64, pageSize uint64, laneId *uint64, laneName *string) ([]*LaneResourceTab, uint64, error)
 }
 
 type laneRepoImpl struct {
@@ -46,12 +46,22 @@ func (l *laneRepoImpl) SelectById(i uint64) (*LaneResourceTab, error) {
 	err := dbLane.Where("lane_id=?", i).Find(&lane).Error
 	return &lane, err
 }
-func (l *laneRepoImpl) SelectWithPage(page uint64, pageSize uint64) ([]*LaneResourceTab, uint64, error) {
+func (l *laneRepoImpl) SelectWithPage(page uint64, pageSize uint64, laneId *uint64, laneName *string) ([]*LaneResourceTab, uint64, error) {
 	var laneRecord = make([]*LaneResourceTab, 0)
 	//var tabs *LaneResourceTab
 	var totalRecords uint64
 	i := int64(totalRecords)
-	err2 := dbLane.Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
+	var err2 error
+	if laneId != nil && laneName != nil {
+		err2 = dbLane.Where("lane_id=?", *laneId).Where("lane_name=?", *laneName).Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
+	} else if laneId != nil {
+		err2 = dbLane.Where("lane_id=?", *laneId).Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
+	} else if laneName != nil {
+		err2 = dbLane.Where("lane_name=?", *laneName).Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
+	} else {
+		err2 = dbLane.Offset(int((page - 1) * pageSize)).Limit(int(pageSize)).Find(&laneRecord).Error
+	}
+
 	dbLane.Model(&LaneResourceTab{}).Count(&i)
 	return laneRecord, uint64(i), err2
 }
