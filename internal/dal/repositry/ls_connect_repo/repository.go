@@ -14,7 +14,6 @@ type connectRepoImpl struct {
 func NewConnectRepo() ConnectRepo {
 	return &connectRepoImpl{}
 }
-
 func (*connectRepoImpl) Create(tab *LaneSiteConnectConfigurationTab) (uint64, error) {
 	if tx := dbConnect.Create(tab); tx.Error != nil {
 		return -1, tx.Error
@@ -23,5 +22,10 @@ func (*connectRepoImpl) Create(tab *LaneSiteConnectConfigurationTab) (uint64, er
 }
 
 func (*connectRepoImpl) Delete(id uint64) error {
-	dbConnect.Delete()
+	var tab LaneSiteConnectConfigurationTab
+	db := dbConnect.Delete(&tab).Where("id=?", id)
+	if db.Error != nil {
+		return db.Error
+	}
+	return nil
 }
