@@ -6,6 +6,7 @@ var dbConnect = initialize.MasterDb
 
 type ConnectRepo interface {
 	Create(tab *LaneSiteConnectConfigurationTab) (uint64, error)
+	Delete(id uint64) error
 }
 type connectRepoImpl struct {
 }
@@ -19,4 +20,8 @@ func (*connectRepoImpl) Create(tab *LaneSiteConnectConfigurationTab) (uint64, er
 		return -1, tx.Error
 	}
 	return tab.Id, nil
+}
+
+func (*connectRepoImpl) Delete(id uint64) error {
+	dbConnect.Delete()
 }
