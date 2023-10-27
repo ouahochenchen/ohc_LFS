@@ -91,15 +91,15 @@ func (l *laneUseCaseImpl) PageSelect(ctx *gin.Context) {
 			fmt.Println(er)
 		}
 	}()
-	var req *admin.PageSelectLaneRequest
+	var req admin.PageSelectLaneRequest
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, common.HttpCommonResponse{
 			ReturnCode: -1,
-			Message:    "get param fail",
+			Message:    fmt.Sprintf("get param fail: %s", err.Error()),
 		})
 		return
 	}
-	pageSelect, err := lane.NewLaneDomain().PageSelect(req)
+	pageSelect, err := lane.NewLaneDomain().PageSelect(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, common.HttpCommonResponse{
 			ReturnCode: -1,
