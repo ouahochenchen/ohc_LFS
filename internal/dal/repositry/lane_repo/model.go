@@ -28,6 +28,8 @@ type LaneCompose struct {
 	ResourceType int  `json:"resource_type"`
 }
 
+type LaneComposeSlice []*LaneCompose
+
 func (lcs *LaneComposeSlice) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
@@ -41,16 +43,4 @@ func (lcs *LaneComposeSlice) Scan(value interface{}) error {
 }
 func (lcs LaneComposeSlice) Value() (driver.Value, error) {
 	return json.Marshal(lcs)
-}
-
-type LaneComposeSlice []*LaneCompose
-
-type LaneSiteConnectConfigurationTab struct {
-	Id             uint `gorm:"column:id;type:int(11) unsigned;primary_key;AUTO_INCREMENT" json:"id"`
-	ResourceId     int  `gorm:"column:resource_id;type:int(11);NOT NULL" json:"resource_id"`
-	NextResourceId int  `gorm:"column:next_resource_id;type:int(11);NOT NULL" json:"next_resource_id"`
-}
-
-func (m *LaneSiteConnectConfigurationTab) TableName() string {
-	return "lane_site_connect_configuration_tab"
 }
