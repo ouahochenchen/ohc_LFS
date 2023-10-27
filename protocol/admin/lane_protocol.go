@@ -7,10 +7,10 @@ import "LFS/internal/dal/repositry/lane_repo"
 链路创建请求协议
 */
 type CreateLaneRequest struct {
-	LaneName      string                     `json:"lane_name"`
-	LaneType      int16                      `json:"lane_type"`
-	LaneComposeSl lane_repo.LaneComposeSlice `json:"lane_compose_sl"`
-	Operator      string                     `json:"operator"`
+	LaneName      string                     `json:"lane_name" binding:"required"`
+	LaneType      int16                      `json:"lane_type" binding:"required"`
+	LaneComposeSl lane_repo.LaneComposeSlice `json:"lane_compose_sl" binding:"required"`
+	Operator      string                     `json:"operator" binding:"required"`
 }
 
 // CreateLaneResponse
@@ -36,8 +36,8 @@ type UpdateLaneResponse struct {
 
 // PageSelectLaneRequest /*
 type PageSelectLaneRequest struct {
-	Page     uint64  `json:"page"`
-	PageSize uint64  `json:"pageSize"`
+	Page     uint64  `json:"page" binding:"required,gt=0"`
+	PageSize uint64  `json:"pageSize" binding:"required,gt=0"`
 	LaneId   *uint64 `json:"laneId"`
 	LaneName *string `json:"laneName"`
 }

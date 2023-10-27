@@ -30,7 +30,7 @@ func (l *laneRepoImpl) CreateBatch(laneResources []*LaneResourceTab) error {
 func (l *laneRepoImpl) Create(laneResource *LaneResourceTab) (uint64, error) {
 	re := dbLane.Create(laneResource)
 	if re.Error != nil {
-		return -1, re.Error
+		return 0, re.Error
 	}
 	return laneResource.LaneId, nil
 }
