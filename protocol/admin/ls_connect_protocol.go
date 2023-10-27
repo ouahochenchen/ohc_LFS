@@ -7,7 +7,7 @@ type CreateConnectRequest struct {
 	NextType       uint64 `json:"next_type" binding:"required"`
 }
 type CreateConnectResponse struct {
-	Id             uint64 `json:"id"`
-	ResourceId     uint64 `json:"resource_id"`
-	NextResourceId uint64 `json:"next_resource_id"`
+	Id             *uint64 `json:"id"`
+	ResourceId     *uint64 `json:"resource_id"`
+	NextResourceId *uint64 `json:"next_resource_id"`
 }
