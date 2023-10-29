@@ -5,7 +5,7 @@ import (
 )
 
 type LaneOrderTab struct {
-	OrderId       uint64          `gorm:"column:order_id;type:int(11) unsigned;primary_key;AUTO_INCREMENT" json:"order_id"`
+	OrderId       uint64          `gorm:"column:order_id;type:int(11) unsigned;primary_key" json:"order_id"`
 	BuyerName     sql.NullString  `gorm:"column:buyer_name;type:varchar(255)" json:"buyer_name"`
 	BuyerAddress  sql.NullString  `gorm:"column:buyer_address;type:varchar(255)" json:"buyer_address"`
 	BuyerPhone    sql.NullString  `gorm:"column:buyer_phone;type:varchar(255)" json:"buyer_phone"`

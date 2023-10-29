@@ -10,52 +10,27 @@ import (
 )
 
 type LaneUseCase interface {
-	CreateLane(ctx *gin.Context)
+	CreateLane(ctx *gin.Context, info interface{}) (interface{}, error)
 	UpdateLane(ctx *gin.Context)
 	PageSelect(ctx *gin.Context)
 }
 
 type laneUseCaseImpl struct {
+	laneService lane.LaneDomain
 }
 
-func NewLaneUseCase() LaneUseCase {
-	return &laneUseCaseImpl{}
+func NewLaneUseCase(laneService lane.LaneDomain) LaneUseCase {
+	return &laneUseCaseImpl{
+		laneService: laneService,
+	}
 }
 
-func (l *laneUseCaseImpl) CreateLane(ctx *gin.Context) {
+func (l *laneUseCaseImpl) CreateLane(ctx *gin.Context, info interface{}) (interface{}, error) {
 	// todo
-	var req admin.CreateLaneRequest
-	if err := ctx.BindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, common.HttpCommonResponse{
-			ReturnCode: -1,
-			Message:    fmt.Sprintf("get param fail: %s", err.Error()),
-			//Data: &admin.CreateLaneResponse{
-			//
-			//},
-		})
-		return
-	}
-	//var laneP = lane_repo.LaneResourceTab{LaneName: req.LaneName, LaneType: req.LaneType, Operator: req.Operator, LaneComposition: req.LaneComposeSl}
-	//create, err := lane_repo.NewLaneRepo().Create(&laneP)
-	create, err := lane.NewLaneDomain().Create(&req)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, common.HttpCommonResponse{
-			ReturnCode: -1,
-			Message:    "get param fail",
-			//Data: &admin.CreateLaneResponse{
-			//
-			//},
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, common.HttpCommonResponse{
-		ReturnCode: 0,
-		Message:    "OK",
-		Data: &admin.CreateLaneResponse{
-			LaneId: create,
-		},
-	})
+	var req = info.(*admin.CreateLaneRequest)
+	return l.laneService.Create(req)
 }
+
 func (l *laneUseCaseImpl) UpdateLane(ctx *gin.Context) {
 	var req admin.UpdateLaneRequest
 	if err := ctx.BindJSON(&req); err != nil {
@@ -65,7 +40,7 @@ func (l *laneUseCaseImpl) UpdateLane(ctx *gin.Context) {
 			//Data:
 		})
 	}
-	update, err := lane.NewLaneDomain().Update(&req)
+	update, err := l.laneService.Update(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, common.HttpCommonResponse{
 			ReturnCode: -1,
@@ -99,7 +74,7 @@ func (l *laneUseCaseImpl) PageSelect(ctx *gin.Context) {
 		})
 		return
 	}
-	pageSelect, err := lane.NewLaneDomain().PageSelect(&req)
+	pageSelect, err := l.laneService.PageSelect(&req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, common.HttpCommonResponse{
 			ReturnCode: -1,
