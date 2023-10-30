@@ -1,18 +1,24 @@
 package order
 
-import "LFS/internal/dal/repositry/order_repo"
+import (
+	"LFS/internal/dal/repositry/order_repo"
+	"LFS/protocol/api"
+)
 
 type OrderDomain interface {
-	CheckDup(ormOrderId uint64) (bool, error)
+	CheckDup(req *api.CheckDuplicateRequest) (bool, error)
 }
 type oderDomainImpl struct {
+	orderService order_repo.OrderRepo
 }
 
-func NewDomainImpl() OrderDomain {
-	return &oderDomainImpl{}
+func NewDomainImpl(repo order_repo.OrderRepo) OrderDomain {
+	return &oderDomainImpl{
+		orderService: repo,
+	}
 }
-func (*oderDomainImpl) CheckDup(ormOrderId uint64) (bool, error) {
-	id, err := order_repo.NewOrderRepo().SelectById(ormOrderId)
+func (o *oderDomainImpl) CheckDup(req *api.CheckDuplicateRequest) (bool, error) {
+	id, err := o.orderService.SelectById(req.OrmOrderId)
 	if err != nil {
 		return false, err
 	}

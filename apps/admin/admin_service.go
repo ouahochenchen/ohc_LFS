@@ -2,21 +2,22 @@ package admin
 
 import (
 	"LFS/internal/dal/repositry/lane_repo"
+	"LFS/internal/dal/repositry/ls_connect_repo"
 	connect2 "LFS/internal/domain/connect"
 	lane2 "LFS/internal/domain/lane"
 	"LFS/internal/usecase/connect"
 	"LFS/internal/usecase/lane"
 )
 
-var admin AdminApp
+var admin adminApp
 
-type AdminApp struct {
+type adminApp struct {
 	laneUseCase    lane.LaneUseCase
 	connectUseCase connect.ConnectUseCase
 }
 
-func NewAdminApp(laneUseCase lane.LaneUseCase, connectUseCase connect.ConnectUseCase) *AdminApp {
-	return &AdminApp{
+func NewAdminApp(laneUseCase lane.LaneUseCase, connectUseCase connect.ConnectUseCase) *adminApp {
+	return &adminApp{
 		laneUseCase:    laneUseCase,
 		connectUseCase: connectUseCase,
 	}
@@ -24,9 +25,10 @@ func NewAdminApp(laneUseCase lane.LaneUseCase, connectUseCase connect.ConnectUse
 
 func init() {
 	repo := lane_repo.NewLaneRepo()
+	repo2 := ls_connect_repo.NewConnectRepo()
 	laneService := lane2.NewLaneDomain(repo)
 	laneUsecase := lane.NewLaneUseCase(laneService)
-	connectService := connect2.NewConnectDomain()
+	connectService := connect2.NewConnectDomain(repo2)
 	connetUsecase := connect.NewConnectUseCase(connectService)
 	admin = *NewAdminApp(laneUsecase, connetUsecase)
 }

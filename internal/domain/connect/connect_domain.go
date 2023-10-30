@@ -5,16 +5,17 @@ import (
 	"LFS/protocol/admin"
 )
 
-var repo = ls_connect_repo.NewConnectRepo()
-
 type ConnectDomain interface {
 	Create(*admin.CreateConnectRequest) (*admin.CreateConnectResponse, error)
 }
 type connectDomainImpl struct {
+	connectService ls_connect_repo.ConnectRepo
 }
 
-func NewConnectDomain() ConnectDomain {
-	return &connectDomainImpl{}
+func NewConnectDomain(connectRepo ls_connect_repo.ConnectRepo) ConnectDomain {
+	return &connectDomainImpl{
+		connectService: connectRepo,
+	}
 }
 func (c *connectDomainImpl) Create(req *admin.CreateConnectRequest) (*admin.CreateConnectResponse, error) {
 	tab := ls_connect_repo.LaneSiteConnectConfigurationTab{
@@ -23,7 +24,7 @@ func (c *connectDomainImpl) Create(req *admin.CreateConnectRequest) (*admin.Crea
 		ResourceType:   req.ResourceType,
 		NextType:       req.NextType,
 	}
-	createId, err := repo.Create(&tab)
+	createId, err := c.connectService.Create(&tab)
 	resp := admin.CreateConnectResponse{
 		Id:             &createId,
 		ResourceId:     &tab.ResourceId,
