@@ -7,6 +7,7 @@ var dbConnect = initialize.MasterDb
 type ConnectRepo interface {
 	Create(tab *LaneSiteConnectConfigurationTab) (uint64, error)
 	Delete(id uint64) error
+	SelectWithAlgo(rId uint64, rType uint64) ([]*LaneSiteConnectConfigurationTab, error)
 	/*继续。。。。。*/
 }
 type connectRepoImpl struct {
@@ -29,4 +30,12 @@ func (*connectRepoImpl) Delete(id uint64) error {
 		return db.Error
 	}
 	return nil
+}
+func (*connectRepoImpl) SelectWithAlgo(rId uint64, rType uint64) ([]*LaneSiteConnectConfigurationTab, error) {
+	record := make([]*LaneSiteConnectConfigurationTab, 0)
+	err := dbConnect.Where("resource_id=? and resource_type=?", rId, rType).Find(&record).Error
+	if err != nil {
+		return nil, err
+	}
+	return record, nil
 }

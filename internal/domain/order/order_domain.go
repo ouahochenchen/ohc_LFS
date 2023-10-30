@@ -2,11 +2,12 @@ package order
 
 import (
 	"LFS/internal/dal/repositry/order_repo"
+	"LFS/internal/util"
 	"LFS/protocol/api"
 )
 
 type OrderDomain interface {
-	CheckDup(req *api.CheckDuplicateRequest) (bool, error)
+	CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error)
 }
 type oderDomainImpl struct {
 	orderService order_repo.OrderRepo
@@ -17,13 +18,13 @@ func NewDomainImpl(repo order_repo.OrderRepo) OrderDomain {
 		orderService: repo,
 	}
 }
-func (o *oderDomainImpl) CheckDup(req *api.CheckDuplicateRequest) (bool, error) {
+func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error) {
 	id, err := o.orderService.SelectById(req.OrmOrderId)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 	if id != nil {
-		return false, nil
+		return nil, &util.MyError{"已有重复订单"}
 	}
-	return true, nil
+	return nil, nil
 }

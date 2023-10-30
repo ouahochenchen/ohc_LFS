@@ -8,7 +8,7 @@ import "LFS/internal/dal/repositry/lane_repo"
 */
 type CreateLaneRequest struct {
 	LaneName      string                     `json:"lane_name" binding:"required"`
-	LaneType      int16                      `json:"lane_type" binding:"required"`
+	LaneType      uint64                     `json:"lane_type" binding:"required"`
 	LaneComposeSl lane_repo.LaneComposeSlice `json:"lane_compose_sl" binding:"required"`
 	Operator      string                     `json:"operator" binding:"required"`
 }
@@ -24,7 +24,7 @@ type CreateLaneResponse struct {
 type UpdateLaneRequest struct {
 	LaneId        uint64                     `json:"lane_id"`
 	LaneName      string                     `json:"lane_name"`
-	LaneType      int16                      `json:"lane_type"`
+	LaneType      uint64                     `json:"lane_type"`
 	LaneComposeSl lane_repo.LaneComposeSlice `json:"lane_compose_sl"`
 	Operator      string                     `json:"operator"`
 	IsOk          int32                      `json:"is_ok"`

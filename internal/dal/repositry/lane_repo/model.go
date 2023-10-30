@@ -10,7 +10,7 @@ import (
 type LaneResourceTab struct {
 	LaneId          uint64           `gorm:"column:lane_id;type:int(11) unsigned;primary_key;AUTO_INCREMENT" json:"lane_id"`
 	IsOk            sql.NullInt32    `gorm:"column:is_ok;type:tinyint(4);default:1" json:"is_ok"`
-	LaneType        int16            `gorm:"column:lane_type;type:tinyint(4);NOT NULL" json:"lane_type"`
+	LaneType        uint64           `gorm:"column:lane_type;type:tinyint(4);NOT NULL" json:"lane_type"`
 	LaneComposition LaneComposeSlice `gorm:"column:lane_composition;type:json;comment:存为list类的json，数据为lineid，siteid，seqence;NOT NULL" json:"lane_composition"`
 	LaneName        string           `gorm:"column:lane_name;type:varchar(255);NOT NULL" json:"lane_name"`
 	Operator        string           `gorm:"column:operator;type:varchar(255);NOT NULL" json:"operator"`
@@ -23,9 +23,9 @@ func (m *LaneResourceTab) TableName() string {
 }
 
 type LaneCompose struct {
-	Sequence     int  `json:"sequence"`
-	ResourceId   uint `json:"resource_id"`
-	ResourceType int  `json:"resource_type"`
+	Sequence     int    `json:"sequence"`
+	ResourceId   uint64 `json:"resource_id"`
+	ResourceType uint64 `json:"resource_type"`
 }
 
 type LaneComposeSlice []*LaneCompose
