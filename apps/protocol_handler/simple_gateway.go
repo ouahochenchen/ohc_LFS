@@ -11,7 +11,7 @@ type SimpleHandlerFunc func(ctx *gin.Context, req interface{}) (interface{}, err
 
 func SimpleGateway(handler SimpleHandlerFunc, target interface{}) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		if err := context.BindJSON(&target); err != nil {
+		if err := context.BindJSON(target); err != nil {
 			context.JSON(http.StatusBadRequest, common.HttpCommonResponse{
 				ReturnCode: -1,
 				Message:    fmt.Sprintf("get param fail: %s", err.Error()),
@@ -23,7 +23,7 @@ func SimpleGateway(handler SimpleHandlerFunc, target interface{}) gin.HandlerFun
 		if err != nil {
 			context.JSON(http.StatusBadRequest, common.HttpCommonResponse{
 				ReturnCode: -1,
-				Message:    "get param fail",
+				Message:    fmt.Sprintf("get param fail: %s", err.Error()),
 			})
 			return
 		}

@@ -14,16 +14,19 @@ type LaneDomain interface {
 }
 
 type laneDomainImpl struct {
+	laneRepo lane_repo.LaneRepo
 }
 
-func NewLaneDomain() LaneDomain {
-	return new(laneDomainImpl)
+func NewLaneDomain(lanerepo lane_repo.LaneRepo) LaneDomain {
+	return &laneDomainImpl{
+		laneRepo: lanerepo,
+	}
 }
 
 func (l *laneDomainImpl) Create(req *admin.CreateLaneRequest) (uint64, error) {
 	var laneP = lane_repo.LaneResourceTab{LaneName: req.LaneName, LaneType: req.LaneType, Operator: req.Operator, LaneComposition: req.LaneComposeSl} //
-	create, err := lane_repo.NewLaneRepo().Create(&laneP)
-	return uint64(create), err
+	create, err := l.laneRepo.Create(&laneP)
+	return create, err
 }
 func (l *laneDomainImpl) Update(request *admin.UpdateLaneRequest) (uint64, error) {
 	lp := &lane_repo.LaneResourceTab{LaneId: request.LaneId, LaneName: request.LaneName, LaneType: request.LaneType,
@@ -31,7 +34,7 @@ func (l *laneDomainImpl) Update(request *admin.UpdateLaneRequest) (uint64, error
 	if lp.LaneId == 0 {
 		return 0, errors.New("更新时laneid不能为0,嘻嘻")
 	}
-	lptab, err := lane_repo.NewLaneRepo().SelectById(lp.LaneId)
+	lptab, err := l.laneRepo.SelectById(lp.LaneId)
 	if err != nil {
 		return 0, err
 	}
@@ -54,14 +57,14 @@ func (l *laneDomainImpl) Update(request *admin.UpdateLaneRequest) (uint64, error
 	if lp.LaneComposition != nil {
 		lptab.LaneComposition = lp.LaneComposition
 	}
-	err1 := lane_repo.NewLaneRepo().Update(lptab)
+	err1 := l.laneRepo.Update(lptab)
 	if err1 != nil {
 		return 0, err1
 	}
 	return lptab.LaneId, err1
 }
 func (l *laneDomainImpl) PageSelect(request *admin.PageSelectLaneRequest) (*admin.PageSelectLaneResponse, error) {
-	record, total, err := lane_repo.NewLaneRepo().SelectWithPage(request.Page, request.PageSize, request.LaneId, request.LaneName)
+	record, total, err := l.laneRepo.SelectWithPage(request.Page, request.PageSize, request.LaneId, request.LaneName)
 	if err != nil {
 		return nil, err
 	}

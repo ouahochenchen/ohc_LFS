@@ -8,7 +8,7 @@ import (
 var repo = ls_connect_repo.NewConnectRepo()
 
 type ConnectDomain interface {
-	Create(*admin.CreateConnectRequest) (uint64, error)
+	Create(*admin.CreateConnectRequest) (*admin.CreateConnectResponse, error)
 }
 type connectDomainImpl struct {
 }
@@ -16,7 +16,7 @@ type connectDomainImpl struct {
 func NewConnectDomain() ConnectDomain {
 	return &connectDomainImpl{}
 }
-func (c *connectDomainImpl) Create(req *admin.CreateConnectRequest) (uint64, error) {
+func (c *connectDomainImpl) Create(req *admin.CreateConnectRequest) (*admin.CreateConnectResponse, error) {
 	tab := ls_connect_repo.LaneSiteConnectConfigurationTab{
 		ResourceId:     req.ResourceId,
 		NextResourceId: req.NextResourceId,
@@ -24,8 +24,13 @@ func (c *connectDomainImpl) Create(req *admin.CreateConnectRequest) (uint64, err
 		NextType:       req.NextType,
 	}
 	createId, err := repo.Create(&tab)
-	if err != nil {
-		return 0, err
+	resp := admin.CreateConnectResponse{
+		Id:             &createId,
+		ResourceId:     &tab.ResourceId,
+		NextResourceId: &tab.NextResourceId,
 	}
-	return createId, nil
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
 }

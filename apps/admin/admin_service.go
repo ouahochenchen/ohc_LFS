@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"LFS/internal/dal/repositry/lane_repo"
 	connect2 "LFS/internal/domain/connect"
 	lane2 "LFS/internal/domain/lane"
 	"LFS/internal/usecase/connect"
@@ -22,7 +23,8 @@ func NewAdminApp(laneUseCase lane.LaneUseCase, connectUseCase connect.ConnectUse
 }
 
 func init() {
-	laneService := lane2.NewLaneDomain()
+	repo := lane_repo.NewLaneRepo()
+	laneService := lane2.NewLaneDomain(repo)
 	laneUsecase := lane.NewLaneUseCase(laneService)
 	connectService := connect2.NewConnectDomain()
 	connetUsecase := connect.NewConnectUseCase(connectService)

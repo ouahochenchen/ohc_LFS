@@ -1,4 +1,4 @@
-package admin
+package api
 
 type CheckDuplicateRequest struct {
 	OrmOrderId    uint64 `json:"orm_order_id" binding:"required"`
@@ -10,7 +10,7 @@ type CheckDuplicateRequest struct {
 	SellerAddress string `json:"seller_address" binding:"required"`
 	SellerPhone   string `json:"seller_phone" binding:"required"`
 	PackageHeight string `json:"package_height" binding:"required"`
-	Price         string `json:"price" binding:"required"`
+	Price         string `json:"price" binding:""`
 	LaneId        uint64 `json:"lane_id" binding:"required"`
 }
 type CheckDuplicateResponse struct {
