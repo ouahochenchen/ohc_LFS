@@ -10,7 +10,7 @@ type CheckDuplicateRequest struct {
 	SellerAddress string `json:"seller_address" binding:"required"`
 	SellerPhone   string `json:"seller_phone" binding:"required"`
 	PackageHeight string `json:"package_height" binding:"required"`
-	Price         string `json:"price" binding:""`
+	Price         string `json:"price" binding:"required"`
 	LaneId        uint64 `json:"lane_id" binding:"required"`
 }
 type CheckDuplicateResponse struct {

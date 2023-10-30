@@ -19,14 +19,14 @@ func NewOrderRepo() OrderRepo {
 func (l *orderRepoImpl) CreateOrder(laneOrder *LaneOrderTab) (uint64, error) {
 	r := dbLane.Create(laneOrder)
 	if r.Error != nil {
-		return -1, r.Error
+		return 0, r.Error
 	}
 	return laneOrder.OrderId, nil
 }
 func (l *orderRepoImpl) UpdateOrder(laneOrder *LaneOrderTab) (uint64, error) {
 	r := dbLane.Updates(laneOrder)
 	if r.Error != nil {
-		return -1, r.Error
+		return 0, r.Error
 	}
 	return laneOrder.OrderId, nil
 }
