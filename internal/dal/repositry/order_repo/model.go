@@ -5,7 +5,7 @@ import (
 )
 
 type LaneOrderTab struct {
-	OrderId       uint64          `gorm:"column:order_id;type:int(11) unsigned;primary_key" json:"order_id"`
+	OrderId       uint64          `gorm:"column:order_id;type:bigint(20) unsigned;primary_key" json:"order_id"`
 	BuyerName     sql.NullString  `gorm:"column:buyer_name;type:varchar(255)" json:"buyer_name"`
 	BuyerAddress  sql.NullString  `gorm:"column:buyer_address;type:varchar(255)" json:"buyer_address"`
 	BuyerPhone    sql.NullString  `gorm:"column:buyer_phone;type:varchar(255)" json:"buyer_phone"`
@@ -19,8 +19,8 @@ type LaneOrderTab struct {
 	OrderStatus   uint64          `gorm:"column:order_status;type:tinyint(4);default:0;NOT NULL" json:"order_status"`
 	LaneId        uint64          `gorm:"column:lane_id;type:int(11);NOT NULL" json:"lane_id"`
 	OmsOrderId    uint64          `gorm:"column:oms_order_id;type:int(11);NOT NULL" json:"oms_order_id"`
-	CreateTime    int64           `gorm:"autoCreateTime;column:create_time;NOT NULL" json:"create_time"`
-	UpdateTime    int64           `gorm:"autoUpdateTime;column:update_time;NOT NULL" json:"update_time"`
+	CreateTime    uint64          `gorm:"autoCreateTime;column:create_time;NOT NULL" json:"create_time"`
+	UpdateTime    uint64          `gorm:"autoUpdateTime;column:update_time;NOT NULL" json:"update_time"`
 }
 
 func (m *LaneOrderTab) TableName() string {

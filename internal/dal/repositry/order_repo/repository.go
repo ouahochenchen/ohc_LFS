@@ -32,7 +32,7 @@ func (l *orderRepoImpl) UpdateOrder(laneOrder *LaneOrderTab) (uint64, error) {
 }
 func (l *orderRepoImpl) SelectById(i uint64) (*LaneOrderTab, error) {
 	var lane LaneOrderTab
-	err := dbLane.Where("order_id=?", i).Find(&lane).Error
+	err := dbLane.Where("oms_order_id=?", i).Find(&lane).Error
 	return &lane, err
 }
 func (l *orderRepoImpl) SelectWithPage(page uint64, pageSize uint64, orderId *uint64, orderName *string) ([]*LaneOrderTab, uint64, error) {
