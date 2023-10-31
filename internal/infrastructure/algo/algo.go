@@ -35,14 +35,14 @@ func (a *algoServiceImpl) IsLaneCanDeliver(laneId uint64) (bool, error) {
 	composition := result.LaneComposition
 
 	sort.Slice(composition, func(i, j int) bool {
-		return composition[i].Sequence > composition[j].Sequence
+		return composition[i].Sequence < composition[j].Sequence
 	})
 	//循环判断点线资源，判断当前资源是否在上一个资源的可达资源组中，根据id和type取出资源下一个可达资源组
 	// 点1-线1-点2-线2-点3
 	canDeliver := new([]*ls_connect_repo.LaneSiteConnectConfigurationTab)
-
 	for _, v := range composition {
-		if canDeliver != nil {
+		//这里要用*  不然是判断切片的地址是否为非空，因为new关键字会初始化切片，切片是有地址的虽然切片的元素为空但切片地址不为空，那样的话条件恒定为true因为地址有值
+		if *canDeliver != nil {
 			var flag bool = false
 			for _, v1 := range *canDeliver {
 				if v1.NextResourceId == v.ResourceId && v1.NextType == v.ResourceType {
