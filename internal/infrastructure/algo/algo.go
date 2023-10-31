@@ -29,6 +29,9 @@ func (a *algoServiceImpl) IsLaneCanDeliver(laneId uint64) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	if result.LaneComposition == nil {
+		return false, &err_code.MyError{Msg: "没有此链路"}
+	}
 	composition := result.LaneComposition
 
 	sort.Slice(composition, func(i, j int) bool {
