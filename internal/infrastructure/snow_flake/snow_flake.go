@@ -23,19 +23,27 @@ type Worker struct {
 	number    int64
 }
 
-func NewWorker(workerId int64) (*Worker, error) {
-	if workerId < 0 || workerId > workerMax {
-		return nil, errors.New("Worker ID excess of quantity")
-	}
+func NewWorker() *Worker {
 	// 生成一个新节点
 	return &Worker{
 		timestamp: 0,
-		workerId:  workerId,
 		number:    0,
-	}, nil
+	}
 }
 
-func (w *Worker) GetId() int64 {
+var w *Worker
+
+func init() {
+	w = NewWorker()
+}
+
+func GetId(workerId int64) (int64, error) {
+
+	w.workerId = workerId
+	if workerId < 0 || workerId > workerMax {
+		return 0, errors.New("Worker ID excess of quantity")
+	}
+
 	w.mu.Lock()
 	defer w.mu.Unlock()
 	now := time.Now().UnixNano() / 1e6
@@ -50,6 +58,6 @@ func (w *Worker) GetId() int64 {
 		w.number = 0
 		w.timestamp = now
 	}
-	ID := int64((now-startTime)<<timeShift | (w.workerId << workerShift) | (w.number))
-	return ID
+	ID := (now-startTime)<<timeShift | (w.workerId << workerShift) | (w.number)
+	return ID, nil
 }

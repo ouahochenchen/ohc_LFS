@@ -1,10 +1,10 @@
 package order
 
 import (
+	"LFS/initialize"
 	"LFS/internal/dal/repositry/order_repo"
 	"LFS/internal/infrastructure/algo"
 	"LFS/internal/infrastructure/err_code"
-	"LFS/internal/infrastructure/kafka"
 	"LFS/internal/infrastructure/snow_flake"
 	"LFS/protocol/api"
 	"LFS/protocol/task"
@@ -48,11 +48,11 @@ func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckD
 	if height > 50 || weight > 200 {
 		return nil, &err_code.MyError{Msg: "包裹尺寸或重量过大"}
 	}
-	worker, err := snow_flake.NewWorker(int64(req.LaneId))
+
+	orderId, err := snow_flake.GetId(req.LaneId)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	orderId := worker.GetId()
 	orderTab := order_repo.LaneOrderTab{
 		OrderId:       uint64(orderId),
 		BuyerName:     sql.NullString{String: req.BuyerName, Valid: true},
@@ -95,14 +95,14 @@ func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckD
 		PackageWeight: uint64(orderTab.PackageWeight.Int32),
 		Price:         orderTab.Price.Float64,
 	}
-	kafkaList := []string{"localhost:9092"}
-	service := kafka.NewKafkaService()
-	produce, err1 := service.InitProduce(kafkaList)
-	_ = produce
-	if err1 != nil {
-		return nil, err1
-	}
-	err2 := service.ProduceMsg(sendMssg)
+	//kafkaList := []string{"localhost:9092"}
+	//service := kafka.NewKafkaService()
+	//_, err1 := service.InitProduce(kafkaList)
+	////_ = produce
+	//if err1 != nil {
+	//	return nil, err1
+	//}
+	err2 := initialize.KafkaProducer.ProduceMsg(sendMssg)
 	if err2 != nil {
 		return nil, err2
 	}
