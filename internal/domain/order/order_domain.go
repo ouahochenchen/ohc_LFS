@@ -4,8 +4,10 @@ import (
 	"LFS/internal/dal/repositry/order_repo"
 	"LFS/internal/infrastructure/algo"
 	"LFS/internal/infrastructure/err_code"
+	"LFS/internal/infrastructure/kafka"
 	"LFS/internal/infrastructure/snow_flake"
 	"LFS/protocol/api"
+	"LFS/protocol/task"
 	"database/sql"
 )
 
@@ -73,10 +75,37 @@ func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckD
 		return nil, err
 	}
 	resp := api.CheckDuplicateResponse{
-		OrmOrderId:  orderTab.OmsOrderId,
-		OrderId:     order,
-		IsOk:        true,
+		OrmOrderId: orderTab.OmsOrderId,
+		OrderId:    order,
+		//IsOk:        true,
 		OrderStatus: orderTab.OrderStatus,
 	}
+	sendMssg := task.ProduceMsg{
+		OrderId:       order,
+		LaneId:        orderTab.LaneId,
+		OrderStatus:   orderTab.OrderStatus,
+		BuyerName:     orderTab.BuyerName.String,
+		BuyerAddress:  orderTab.BuyerAddress.String,
+		BuyerPhone:    orderTab.BuyerPhone.String,
+		GoodsType:     orderTab.GoodsType,
+		SellerName:    orderTab.SellerName.String,
+		SellerAddress: orderTab.SellerAddress.String,
+		SellerPhone:   orderTab.SellerPhone.String,
+		PackageHeight: uint64(orderTab.PackageHeight.Int32),
+		PackageWeight: uint64(orderTab.PackageWeight.Int32),
+		Price:         orderTab.Price.Float64,
+	}
+	kafkaList := []string{"localhost:9092"}
+	service := kafka.NewKafkaService()
+	produce, err1 := service.InitProduce(kafkaList)
+	_ = produce
+	if err1 != nil {
+		return nil, err1
+	}
+	err2 := service.ProduceMsg(sendMssg)
+	if err2 != nil {
+		return nil, err2
+	}
+	resp.IsOk = true
 	return &resp, nil
 }
