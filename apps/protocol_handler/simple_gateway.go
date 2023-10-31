@@ -10,6 +10,11 @@ import (
 type SimpleHandlerFunc func(ctx *gin.Context, req interface{}) (interface{}, error)
 
 func SimpleGateway(handler SimpleHandlerFunc, target interface{}) gin.HandlerFunc {
+	defer func() {
+		if err := recover(); err != nil {
+			_ = fmt.Sprintf("捕获到了panic:%s", err)
+		}
+	}()
 	return func(context *gin.Context) {
 		if err := context.BindJSON(target); err != nil {
 			context.JSON(http.StatusBadRequest, common.HttpCommonResponse{

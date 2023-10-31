@@ -2,7 +2,8 @@ package order
 
 import (
 	"LFS/internal/dal/repositry/order_repo"
-	"LFS/internal/util"
+	"LFS/internal/infrastructure/algo"
+	"LFS/internal/infrastructure/err_code"
 	"LFS/protocol/api"
 )
 
@@ -11,6 +12,7 @@ type OrderDomain interface {
 }
 type oderDomainImpl struct {
 	orderService order_repo.OrderRepo
+	algoService  algo.AlgoService
 }
 
 func NewDomainImpl(repo order_repo.OrderRepo) OrderDomain {
@@ -19,12 +21,19 @@ func NewDomainImpl(repo order_repo.OrderRepo) OrderDomain {
 	}
 }
 func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error) {
-	id, err := o.orderService.SelectById(req.OrmOrderId)
+	tab, err := o.orderService.SelectById(req.OrmOrderId)
 	if err != nil {
 		return nil, err
 	}
-	if id != nil {
-		return nil, &util.MyError{"已有重复订单"}
+	if tab != nil {
+		return nil, &err_code.MyError{Msg: "已有重复订单"}
+	}
+	canDeliver, err := o.algoService.IsLaneCanDeliver(req.LaneId)
+	if err != nil {
+		return nil, err
+	}
+	if canDeliver == false {
+		return nil, &err_code.MyError{Msg: "链路不可达"}
 	}
 	return nil, nil
 }
