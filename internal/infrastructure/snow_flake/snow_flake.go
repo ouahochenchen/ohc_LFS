@@ -26,7 +26,7 @@ type Worker struct {
 func NewWorker() *Worker {
 	// 生成一个新节点
 	return &Worker{
-		timestamp: 0,
+		timestamp: 1,
 		number:    0,
 	}
 }

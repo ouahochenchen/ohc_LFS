@@ -49,7 +49,7 @@ func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckD
 		return nil, &err_code.MyError{Msg: "包裹尺寸或重量过大"}
 	}
 
-	orderId, err := snow_flake.GetId(req.LaneId)
+	orderId, err := snow_flake.GetId(int64(req.LaneId))
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckD
 	//if err1 != nil {
 	//	return nil, err1
 	//}
-	err2 := initialize.KafkaProducer.ProduceMsg(sendMssg)
+	err2 := initialize.KafkaService.ProduceMsg(sendMssg, "test")
 	if err2 != nil {
 		return nil, err2
 	}
