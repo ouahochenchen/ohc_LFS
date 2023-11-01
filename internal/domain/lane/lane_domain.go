@@ -11,6 +11,7 @@ type LaneDomain interface {
 	Create(request *admin.CreateLaneRequest) (uint64, error)
 	Update(request *admin.UpdateLaneRequest) (uint64, error)
 	PageSelect(request *admin.PageSelectLaneRequest) (*admin.PageSelectLaneResponse, error)
+	SelectById(laneId uint64) *lane_repo.LaneResourceTab
 }
 
 type laneDomainImpl struct {
@@ -73,4 +74,11 @@ func (l *laneDomainImpl) PageSelect(request *admin.PageSelectLaneRequest) (*admi
 	//tabs = append(tabs, record)
 	recordResponse = &admin.PageSelectLaneResponse{ResponseTab: record, Page: request.Page, PageSize: request.PageSize, Total: total}
 	return recordResponse, err
+}
+func (l *laneDomainImpl) SelectById(laneId uint64) *lane_repo.LaneResourceTab {
+	tab, err := l.laneRepo.SelectById(laneId)
+	if err != nil {
+		return nil
+	}
+	return tab
 }

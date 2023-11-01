@@ -13,6 +13,7 @@ import (
 
 type OrderDomain interface {
 	CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error)
+	SelectById(ormId uint64) *order_repo.LaneOrderTab
 }
 type oderDomainImpl struct {
 	orderService order_repo.OrderRepo
@@ -81,19 +82,19 @@ func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckD
 		OrderStatus: orderTab.OrderStatus,
 	}
 	sendMssg := task.ProduceMsg{
-		OrderId:       order,
-		LaneId:        orderTab.LaneId,
-		OrderStatus:   orderTab.OrderStatus,
-		BuyerName:     orderTab.BuyerName.String,
-		BuyerAddress:  orderTab.BuyerAddress.String,
-		BuyerPhone:    orderTab.BuyerPhone.String,
-		GoodsType:     orderTab.GoodsType,
-		SellerName:    orderTab.SellerName.String,
-		SellerAddress: orderTab.SellerAddress.String,
-		SellerPhone:   orderTab.SellerPhone.String,
-		PackageHeight: uint64(orderTab.PackageHeight.Int32),
-		PackageWeight: uint64(orderTab.PackageWeight.Int32),
-		Price:         orderTab.Price.Float64,
+		OrderId: order,
+		//LaneId:        orderTab.LaneId,
+		//OrderStatus:   orderTab.OrderStatus,
+		//BuyerName:     orderTab.BuyerName.String,
+		//BuyerAddress:  orderTab.BuyerAddress.String,
+		//BuyerPhone:    orderTab.BuyerPhone.String,
+		//GoodsType:     orderTab.GoodsType,
+		//SellerName:    orderTab.SellerName.String,
+		//SellerAddress: orderTab.SellerAddress.String,
+		//SellerPhone:   orderTab.SellerPhone.String,
+		//PackageHeight: uint64(orderTab.PackageHeight.Int32),
+		//PackageWeight: uint64(orderTab.PackageWeight.Int32),
+		//Price:         orderTab.Price.Float64,
 	}
 	//kafkaList := []string{"localhost:9092"}
 	//service := kafka.NewKafkaService()
@@ -108,4 +109,11 @@ func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckD
 	}
 	resp.IsOk = true
 	return &resp, nil
+}
+func (o *oderDomainImpl) SelectById(ormId uint64) *order_repo.LaneOrderTab {
+	tab, err := o.orderService.SelectById(ormId)
+	if err != nil {
+		return nil
+	}
+	return tab
 }
