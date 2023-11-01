@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-func doTask() {
+func DoTask() {
 	service := initialize.KafkaService
 	//msgSlice := new([]*task.ProduceMsg)
 	err, msgChan := service.ConsumeMsg("LFS")
