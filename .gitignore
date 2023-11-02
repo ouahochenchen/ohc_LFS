@@ -1,2 +1,4 @@
 #忽略所有的本地idea文件
 .idea/
+bugged.txt
+better.txt
