@@ -28,7 +28,7 @@ func RouterInit() {
 	{
 		laneGroup2.POST("/create", protocol_handler.SimpleGateway(admin.connectUseCase.CreateConnect, &admin2.CreateConnectRequest{}))
 	}
-	err := r.Run(":8080")
+	err := r.Run(":8082")
 	if err != nil {
 		return
 	}

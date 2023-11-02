@@ -20,5 +20,5 @@ func NewOrderUseCase(orderService order.OrderDomain) OrderUseCase {
 }
 func (o *orderUseCaseImpl) CheckOrder(ctx *gin.Context, info interface{}) (interface{}, error) {
 	request := info.(*api.CheckDuplicateRequest)
-	return o.orderService.CheckOrder(request)
+	return o.orderService.PlacingOrder(request)
 }

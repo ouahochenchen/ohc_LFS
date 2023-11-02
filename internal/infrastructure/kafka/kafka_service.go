@@ -44,7 +44,7 @@ func (kafka *kafkaServiceImpl) ProduceMsg(msg task.ProduceMsg, topic string) err
 	//topic := "test"
 	sendMsg := &sarama.ProducerMessage{
 		Topic:     topic,
-		Partition: int32(1),
+		Partition: int32(0),
 		Value:     sarama.StringEncoder(msgJson),
 	}
 	partition, offset, err := kafka.producer.SendMessage(sendMsg)
@@ -81,36 +81,5 @@ func (kafka *kafkaServiceImpl) ConsumeMsg(topic string) (error, <-chan *sarama.C
 		fmt.Println("Failed to create partition consumer:", err.Error())
 		return err, nil
 	}
-
-	defer func(partitionConsumer sarama.PartitionConsumer) {
-		err := partitionConsumer.Close()
-		if err != nil {
-
-		}
-	}(partitionConsumer)
-
-	//signals := make(chan os.Signal, 1)
-	//signal.Notify(signals, os.Interrupt)
-	//wg.Add(1)
-	//go func(pc sarama.PartitionConsumer) {
-	//	wg.Done()
-	//	//for {
-	//	select {
-	//	case msg := <-pc.Messages():
-	//		fmt.Printf("Consumer: Received message: topic=%s, partition=%d, offset=%d, value=%s\n",
-	//			msg.Topic, msg.Partition, msg.Offset, string(msg.Value))
-	//		var pcMsg task.ProduceMsg
-	//		err := json.Unmarshal(msg.Value, &pcMsg)
-	//		_ = append(*msgSlice, &pcMsg)
-	//		if err != nil {
-	//			//return err, &pcMsg
-	//		}
-	//	case <-signals:
-	//		return
-	//		//return &err_code.MyError{Msg: "消费中止"}, nil
-	//	}
-	//	//}
-	//}(partitionConsumer)
-	//wg.Wait()
 	return err, partitionConsumer.Messages()
 }

@@ -14,7 +14,7 @@ import (
 func DoTask() {
 	service := initialize.KafkaService
 	//msgSlice := new([]*task.ProduceMsg)
-	err, msgChan := service.ConsumeMsg("LFS")
+	err, msgChan := service.ConsumeMsg("test")
 	if err != nil {
 		return
 	}
@@ -24,12 +24,13 @@ func DoTask() {
 	for {
 		select {
 		case msg := <-msgChan:
-			fmt.Printf("Consumer: Received message: topic=%s, partition=%d, offset=%d, value=%s\n",
-				msg.Topic, msg.Partition, msg.Offset, string(msg.Value))
+			//fmt.Printf("Consumer: Received message: topic=%s, partition=%d, offset=%d, value=%s\n",
+			//	msg.Topic, msg.Partition, msg.Offset, string(msg.Value))
 			var pcMsg task.ProduceMsg
 			err := json.Unmarshal(msg.Value, &pcMsg)
 			if err != nil {
 			}
+			//726491287649386496
 			order := taskService.taskUseCase.SelectOrder(pcMsg.OrderId)
 			composeTab := taskService.taskUseCase.SelectLaneCompose(order.LaneId)
 			compose := composeTab.LaneComposition
@@ -40,6 +41,7 @@ func DoTask() {
 					defer wg.Done()
 					if value.ResourceType == constant.LineType {
 						//todo grpc request
+						fmt.Println("狗儿伤", order.OrderId, value.ResourceId)
 					}
 				}()
 			}

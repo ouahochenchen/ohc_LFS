@@ -12,7 +12,7 @@ import (
 )
 
 type OrderDomain interface {
-	CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error)
+	PlacingOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error)
 	SelectById(ormId uint64) *order_repo.LaneOrderTab
 }
 type oderDomainImpl struct {
@@ -26,8 +26,8 @@ func NewDomainImpl(repo order_repo.OrderRepo, algoRepo algo.AlgoService) OrderDo
 		algoService:  algoRepo,
 	}
 }
-func (o *oderDomainImpl) CheckOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error) {
-	tab, err := o.orderService.SelectById(req.OrmOrderId)
+func (o *oderDomainImpl) PlacingOrder(req *api.CheckDuplicateRequest) (*api.CheckDuplicateResponse, error) {
+	tab, err := o.orderService.SelectByOmsId(req.OrmOrderId)
 	if err != nil {
 		return nil, err
 	}

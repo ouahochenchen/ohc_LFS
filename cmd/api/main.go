@@ -9,9 +9,9 @@ import (
 )
 
 func main() {
-	api.RouterInit()
 	err := initialize.InitKafka([]string{"localhost:9092"})
 	if err != nil {
 		log.Panicf("InitKafka fail: %s", err.Error())
 	}
+	api.RouterInit()
 }
