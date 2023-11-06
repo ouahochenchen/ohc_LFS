@@ -3,7 +3,10 @@ package task
 import (
 	"LFS/initialize"
 	"LFS/internal/constant"
+	"LFS/internal/dal/invoker/lls/grpc_connect"
+	_go "LFS/protocol/grpc/go"
 	"LFS/protocol/task"
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -42,6 +45,26 @@ func DoTask() {
 					if value.ResourceType == constant.LineType {
 						//todo grpc request
 						fmt.Println("狗儿伤", order.OrderId, value.ResourceId)
+						req := &_go.LfsRequest{
+							LfsOrderId:    order.OrderId,
+							LineId:        value.ResourceId,
+							BuyerName:     order.BuyerName.String,
+							BuyerAddress:  order.BuyerAddress.String,
+							BuyerPhone:    order.BuyerPhone.String,
+							GoodsType:     order.GoodsType,
+							SellerName:    order.SellerName.String,
+							SellerAddress: order.SellerAddress.String,
+							SellerPhone:   order.SellerPhone.String,
+							PackageHeight: uint64(order.PackageHeight.Int32),
+							PackageWeight: uint64(order.PackageWeight.Int32),
+							Price:         float32(order.Price.Float64),
+							OrderStatus:   order.OrderStatus,
+						}
+						resp, err2 := grpc_connect.LlsClientVa.LfsRpc(context.Background(), req)
+						if err2 != nil {
+							return
+						}
+						fmt.Printf("异步调用请求的返回值是:%s\n", resp)
 					}
 				}()
 			}

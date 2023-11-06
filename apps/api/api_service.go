@@ -1,9 +1,9 @@
 package api
 
 import (
-	"LFS/internal/dal/repositry/lane_repo"
-	"LFS/internal/dal/repositry/ls_connect_repo"
-	"LFS/internal/dal/repositry/order_repo"
+	"LFS/internal/dal/repository/lane_repo"
+	"LFS/internal/dal/repository/ls_connect_repo"
+	"LFS/internal/dal/repository/order_repo"
 	order2 "LFS/internal/domain/order"
 	"LFS/internal/infrastructure/algo"
 	"LFS/internal/usecase/order"

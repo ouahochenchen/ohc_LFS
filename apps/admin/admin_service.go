@@ -1,8 +1,8 @@
 package admin
 
 import (
-	"LFS/internal/dal/repositry/lane_repo"
-	"LFS/internal/dal/repositry/ls_connect_repo"
+	"LFS/internal/dal/repository/lane_repo"
+	"LFS/internal/dal/repository/ls_connect_repo"
 	connect2 "LFS/internal/domain/connect"
 	lane2 "LFS/internal/domain/lane"
 	"LFS/internal/usecase/connect"

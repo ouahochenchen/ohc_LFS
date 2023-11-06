@@ -63,7 +63,7 @@ func (kafka *kafkaServiceImpl) InitConsumer(brokerList []string) (sarama.Consume
 	// 创建消费者
 	consumer, err := sarama.NewConsumer(brokerList, config)
 	if err != nil {
-		fmt.Println("Failed to connect to Kafka:", err.Error())
+		fmt.Println("Failed to grpc_connect to Kafka:", err.Error())
 		return nil, err
 	}
 	kafka.consumer = consumer

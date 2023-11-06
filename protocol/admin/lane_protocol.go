@@ -1,6 +1,6 @@
 package admin
 
-import "LFS/internal/dal/repositry/lane_repo"
+import "LFS/internal/dal/repository/lane_repo"
 
 // CreateLaneRequest
 /**

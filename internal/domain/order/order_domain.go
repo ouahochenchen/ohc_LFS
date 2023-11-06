@@ -2,7 +2,7 @@ package order
 
 import (
 	"LFS/initialize"
-	"LFS/internal/dal/repositry/order_repo"
+	"LFS/internal/dal/repository/order_repo"
 	"LFS/internal/infrastructure/algo"
 	"LFS/internal/infrastructure/err_code"
 	"LFS/internal/infrastructure/snow_flake"

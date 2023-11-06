@@ -1,7 +1,7 @@
 package lane
 
 import (
-	"LFS/internal/dal/repositry/lane_repo"
+	"LFS/internal/dal/repository/lane_repo"
 	"LFS/protocol/admin"
 	"database/sql"
 	"errors"

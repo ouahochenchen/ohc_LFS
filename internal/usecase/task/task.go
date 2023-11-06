@@ -1,8 +1,8 @@
 package task
 
 import (
-	"LFS/internal/dal/repositry/lane_repo"
-	"LFS/internal/dal/repositry/order_repo"
+	"LFS/internal/dal/repository/lane_repo"
+	"LFS/internal/dal/repository/order_repo"
 	"LFS/internal/domain/lane"
 	"LFS/internal/domain/order"
 )

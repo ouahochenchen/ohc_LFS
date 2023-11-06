@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package lfs;
+
+option go_package = "./go";
+
+service LfsService {
+  rpc LfsRpc(LfsRequest) returns (LfsResponse) {}
+}
+message LfsRequest {
+  string lfsOrderId = 1;
+  string lineId = 2;
+  string buyerName=3;
+  string buyerAddress = 4;
+  string buyerPhone = 5;
+  uint64 goodsType = 6;
+  string sellerName = 7;
+  string sellerAddress = 8;
+  string sellerPhone = 9;
+  uint64 packageHeight =10;
+  uint64 packageWeight = 11;
+  float  price=12;
+  uint64 orderStatus = 13;
+}
+
+message LfsResponse {
+  string lfsOrderId = 1;
+  string orderId = 2;
+  string orderStatus = 3;
+  bool   isOk = 4;
+
+}

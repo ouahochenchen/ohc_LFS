@@ -17,7 +17,7 @@
     2、constant:常量定义
     3、dal:数据访问层
         invoker:调用外部服务
-        repositry:放DB连接数据
+        repository:放DB连接数据
     4、dto:数据传输对象
     5、infrastructure:基础设施层
     6、usecase:相当于service层

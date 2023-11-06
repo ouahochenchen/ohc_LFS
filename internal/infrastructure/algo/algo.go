@@ -1,8 +1,8 @@
 package algo
 
 import (
-	"LFS/internal/dal/repositry/lane_repo"
-	"LFS/internal/dal/repositry/ls_connect_repo"
+	"LFS/internal/dal/repository/lane_repo"
+	"LFS/internal/dal/repository/ls_connect_repo"
 	"LFS/internal/infrastructure/err_code"
 	"sort"
 )

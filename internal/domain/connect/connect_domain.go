@@ -1,7 +1,7 @@
 package connect
 
 import (
-	"LFS/internal/dal/repositry/ls_connect_repo"
+	"LFS/internal/dal/repository/ls_connect_repo"
 	"LFS/protocol/admin"
 )
 
