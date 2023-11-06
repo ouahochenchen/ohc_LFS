@@ -18,7 +18,7 @@ func NewReqLLS() ReqLLS {
 }
 
 func (r *reqLLSImpl) GrpcReq(ctx context.Context, req *_go.LfsRequest) (*_go.LfsResponse, error) {
-	reps, err := grpc_connect.LlsClientVa.LfsRpc(ctx, req)
+	reps, err := grpc_connect.LlsClientVa.CreateLineOrder(ctx, req)
 	if err != nil {
 		return nil, err
 	}

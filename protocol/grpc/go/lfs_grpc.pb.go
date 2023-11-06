@@ -17,7 +17,7 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LfsServiceClient interface {
-	LfsRpc(ctx context.Context, in *LfsRequest, opts ...grpc.CallOption) (*LfsResponse, error)
+	CreateLineOrder(ctx context.Context, in *LfsRequest, opts ...grpc.CallOption) (*LfsResponse, error)
 }
 
 type lfsServiceClient struct {
@@ -28,9 +28,9 @@ func NewLfsServiceClient(cc grpc.ClientConnInterface) LfsServiceClient {
 	return &lfsServiceClient{cc}
 }
 
-func (c *lfsServiceClient) LfsRpc(ctx context.Context, in *LfsRequest, opts ...grpc.CallOption) (*LfsResponse, error) {
+func (c *lfsServiceClient) CreateLineOrder(ctx context.Context, in *LfsRequest, opts ...grpc.CallOption) (*LfsResponse, error) {
 	out := new(LfsResponse)
-	err := c.cc.Invoke(ctx, "/lfs.LfsService/LfsRpc", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/lfs.LfsService/CreateLineOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ type UnimplementedLfsServiceServer struct {
 }
 
 func (*UnimplementedLfsServiceServer) LfsRpc(context.Context, *LfsRequest) (*LfsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LfsRpc not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLineOrder not implemented")
 }
 func (*UnimplementedLfsServiceServer) mustEmbedUnimplementedLfsServiceServer() {}
 
@@ -68,7 +68,7 @@ func _LfsService_LfsRpc_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/lfs.LfsService/LfsRpc",
+		FullMethod: "/lfs.LfsService/CreateLineOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LfsServiceServer).LfsRpc(ctx, req.(*LfsRequest))
@@ -81,7 +81,7 @@ var _LfsService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*LfsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "LfsRpc",
+			MethodName: "CreateLineOrder",
 			Handler:    _LfsService_LfsRpc_Handler,
 		},
 	},

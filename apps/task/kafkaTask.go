@@ -60,7 +60,7 @@ func DoTask() {
 							Price:         float32(order.Price.Float64),
 							OrderStatus:   order.OrderStatus,
 						}
-						resp, err2 := grpc_connect.LlsClientVa.LfsRpc(context.Background(), req)
+						resp, err2 := grpc_connect.LlsClientVa.CreateLineOrder(context.Background(), req)
 						if err2 != nil {
 							return
 						}

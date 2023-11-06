@@ -298,8 +298,8 @@ var file_lfs_proto_goTypes = []interface{}{
 	(*LfsResponse)(nil), // 1: lfs.LfsResponse
 }
 var file_lfs_proto_depIdxs = []int32{
-	0, // 0: lfs.LfsService.LfsRpc:input_type -> lfs.LfsRequest
-	1, // 1: lfs.LfsService.LfsRpc:output_type -> lfs.LfsResponse
+	0, // 0: lfs.LfsService.CreateLineOrder:input_type -> lfs.LfsRequest
+	1, // 1: lfs.LfsService.CreateLineOrder:output_type -> lfs.LfsResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
