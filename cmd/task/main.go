@@ -3,7 +3,7 @@ package main
 import (
 	"LFS/apps/task"
 	"LFS/initialize"
-	"LFS/internal/dal/invoker/lls/grpc_connect"
+	"LFS/internal/dal/invoker/lls_invoker/grpc_connect"
 	"log"
 )
 
@@ -12,6 +12,6 @@ func main() {
 	if err != nil {
 		log.Panicf("InitKafka fail: %s", err.Error())
 	}
-	grpc_connect.Init("localhost:50051")
+	grpc_connect.InitLLS("localhost:50051")
 	task.DoTask()
 }

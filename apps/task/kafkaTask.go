@@ -3,12 +3,12 @@ package task
 import (
 	"LFS/initialize"
 	"LFS/internal/constant"
-	"LFS/internal/dal/invoker/lls/grpc_connect"
-	_go "LFS/protocol/grpc/go"
+	"LFS/internal/dal/invoker/lls_invoker/grpc_connect"
 	"LFS/protocol/task"
 	"context"
 	"encoding/json"
 	"fmt"
+	lls_pb "github.com/ouahochenchen/LLS/protocol/grpc/go"
 	"os"
 	"os/signal"
 	"sync"
@@ -45,7 +45,7 @@ func DoTask() {
 					if value.ResourceType == constant.LineType {
 						//todo grpc request
 						fmt.Println("狗儿伤", order.OrderId, value.ResourceId)
-						req := &_go.LfsRequest{
+						req := &lls_pb.LfsRequest{
 							LfsOrderId:    order.OrderId,
 							LineId:        value.ResourceId,
 							BuyerName:     order.BuyerName.String,

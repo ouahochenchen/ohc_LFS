@@ -5,6 +5,7 @@ go 1.21
 require (
 	github.com/IBM/sarama v1.41.3
 	github.com/gin-gonic/gin v1.9.1
+	github.com/ouahochenchen/LLS v1.0.2
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
 	gorm.io/driver/mysql v1.5.2

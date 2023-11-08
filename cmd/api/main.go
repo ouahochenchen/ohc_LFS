@@ -13,5 +13,6 @@ func main() {
 	if err != nil {
 		log.Panicf("InitKafka fail: %s", err.Error())
 	}
+	//grpc_connect.Init("localhost:50051")
 	api.RouterInit()
 }

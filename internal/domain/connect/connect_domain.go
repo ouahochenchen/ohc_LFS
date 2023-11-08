@@ -1,8 +1,12 @@
 package connect
 
 import (
+	"LFS/internal/dal/invoker/lls_invoker/grpc_connect"
 	"LFS/internal/dal/repository/ls_connect_repo"
+	"LFS/internal/infrastructure/err_code"
 	"LFS/protocol/admin"
+	"context"
+	_go "github.com/ouahochenchen/LLS/protocol/grpc/go"
 )
 
 type ConnectDomain interface {
@@ -23,6 +27,19 @@ func (c *connectDomainImpl) Create(req *admin.CreateConnectRequest) (*admin.Crea
 		NextResourceId: req.NextResourceId,
 		ResourceType:   req.ResourceType,
 		NextType:       req.NextType,
+	}
+	reqGrpc := &_go.ExistSiteLineRequest{
+		ResourceId:   req.ResourceId,
+		NextId:       req.NextResourceId,
+		ResourceType: req.ResourceType,
+		NextType:     req.NextType,
+	}
+	resource, err := grpc_connect.ResourceClientVa.IsExistResource(context.Background(), reqGrpc)
+	if resource.IsExist == false {
+		return nil, &err_code.MyError{Msg: "所选内容含不存在的点线"}
+	}
+	if err != nil {
+		return nil, err
 	}
 	createId, err := c.connectService.Create(&tab)
 	resp := admin.CreateConnectResponse{
