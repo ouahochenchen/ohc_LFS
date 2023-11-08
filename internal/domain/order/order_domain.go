@@ -76,9 +76,9 @@ func (o *oderDomainImpl) PlacingOrder(req *api.CheckDuplicateRequest) (*api.Chec
 		return nil, err
 	}
 	resp := api.CheckDuplicateResponse{
-		OrmOrderId: orderTab.OmsOrderId,
-		OrderId:    order,
-		//IsOk:        true,
+		OrmOrderId:  orderTab.OmsOrderId,
+		OrderId:     order,
+		IsOk:        false,
 		OrderStatus: orderTab.OrderStatus,
 	}
 	sendMssg := task.ProduceMsg{

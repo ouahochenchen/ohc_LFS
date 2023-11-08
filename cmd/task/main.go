@@ -12,6 +12,6 @@ func main() {
 	if err != nil {
 		log.Panicf("InitKafka fail: %s", err.Error())
 	}
-	grpc_connect.InitLLS("localhost:50051")
+	grpc_connect.InitLLS("localhost:50052")
 	task.DoTask()
 }
